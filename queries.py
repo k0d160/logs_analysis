@@ -44,7 +44,18 @@ def get_errors():
     ''' On which days did more than 1% of requests lead to errors '''
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select b.stat, b.err, b.day, sum(b.ok) as ok_codes, sum(b.err) err_codes from (select a.day as day, a.t as t, a.stat as stat, sum(a.stat in ('200 OK')::int) as ok, sum(a.stat in ('404 NOT FOUND')::int) as err from (select extract(day from time) as day, time as t, status as stat from log group by time, status order by day) a group by a.day, a.t, a.stat) as b group by b.stat, b.err, b.day having sum(b.ok) != b.err order by b.day")
+    c.execute("select format('%s --- %s errors', d.date, d.percent) \
+               from (select TO_CHAR(time :: DATE, 'Mon dd, yyyy') as date \
+               , c.day, to_char(c.percentages, '9.99%') as percent \
+               from (select b.day as day, ((b.errors * 100)::float) \
+               / (b.ok + b.errors) as percentages \
+               from (select a.day as day, (sum(a.status in ('200 OK')::int)) \
+               as ok, (sum(a.status in ('404 NOT FOUND')::int)) as errors \
+               from (select extract(day from time) as day, time as time, status \
+               as status from log) a group by day) as b \
+               group by b.day, b.errors, b.ok) c,log \
+               where c.day = extract(day from time) and c.percentages >= 1 \
+               limit 1) as d")
     errs = c.fetchall()
     db.close()
     return errs
@@ -53,8 +64,8 @@ print("\nThe most popular articles of all time are:\n")
 print(get_popular_articles())
 print("\nThe most popular authors of all time are:\n")
 print(get_popular_authors())
-print("\nThe days on which more than 1% of request"
-      "lead to errors were:\n")
+print("\nThe day on which more than 1% of request"
+      " lead to errors was:\n")
 print(get_errors())
 
 
@@ -63,21 +74,15 @@ print(get_errors())
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#"select d.day, count(d.stat) as num, d.stat from (select extract(day from time    ) as day, time, status as stat from log group by day, time, status order by day    ) as d where d.day = 1 or d.day > 1  group by d.day, d.stat order by d.day"
-
+"select format('%s --- %s errors', d.date, d.percent) \
+ 48                from (select TO_CHAR(time :: DATE, 'Mon dd, yyyy') as date \
+ 49                , c.day, to_char(c.percentages, '9.99%') as percent \
+ 50                from (select b.day as day, ((b.errors * 100)::float) \
+ 51                / (b.ok + b.errors) as percentages \
+ 52                from (select a.day as day, (sum(a.status in ('200 OK')::int)) \
+ 53                as ok, (sum(a.status in ('404 NOT FOUND')::int)) as errors \
+ 54                from (select extract(day from time) as day, time as time, status \
+ 55                as status from log) a group by day) as b \
+ 56                group by b.day, b.errors, b.ok) c,log \
+ 57                where c.day = extract(day from time) and c.percentages >= 1 \
+ 58                limit 1) as d"
