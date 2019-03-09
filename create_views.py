@@ -5,11 +5,12 @@ import psycopg2
 DBNAME = "news"
 
 
-def get_popular_articles():
-    ''' Get the most popular three articles of all time '''
+def create_popular_articles_view():
+    # Get the most popular three articles of all time
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select \
+    c.execute("create view pop_articles as\
+               select \
                format('\"%s\" --- %s views', title, views) \
                from (select title, articles.author, count(author) \
                as views from articles, log \
@@ -17,16 +18,16 @@ def get_popular_articles():
                group by title, author \
                order by views desc \
                limit 3) as t")
-    pop_articles = c.fetchall()
+    db.commit()
     db.close()
-    return pop_articles
 
 
-def get_popular_authors():
-    ''' Get the most popular authors of all time '''
+def create_popular_authors_view():
+    # Get the most popular authors of all time
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select format('%s --- %s views', d.name, d.total) as total \
+    c.execute("create view popular_authors as\
+               select format('%s --- %s views', d.name, d.total) as total \
                from (select sum(t.views) as total, t.no as name \
                from (select title, articles.author, authors.id as aid, \
                name as no, count(author) as views from authors, articles, log \
@@ -37,16 +38,16 @@ def get_popular_authors():
                order by total desc) \
                as d group by d.total, d.name \
                order by d.total desc")
-    pop_authors = c.fetchall()
+    db.commit()
     db.close()
-    return pop_authors
 
 
-def get_errors():
-    ''' On which days did more than 1% of requests lead to errors '''
+def create_errors_view():
+    # On which days did more than 1% of requests lead to errors
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select format('%s --- %s errors', d.date, d.percent) \
+    c.execute("create view errors as \
+               select format('%s --- %s errors', d.date, d.percent) \
                from (select TO_CHAR(time :: DATE, 'Mon dd, yyyy') as date \
                , c.day, to_char(c.percentages, '9.99%') as percent \
                from (select b.day as day, ((b.errors * 100)::float) \
@@ -58,18 +59,20 @@ def get_errors():
                group by b.day, b.errors, b.ok) c,log \
                where c.day = extract(day from time) and c.percentages >= 1 \
                limit 1) as d")
-    errs = c.fetchall()
+    db.commit()
     db.close()
-    return errs
 
-articles = get_popular_articles()
-authors = get_popular_authors()
-errors = get_errors()
 
-print("\nThe most popular articles of all time are:\n")
-print("{0[0]}\n{1[0]}\n{2[0]}".format(*articles))
-print("\nThe most popular authors of all time are:\n")
-print("{0[0]}\n{1[0]}\n{2[0]}\n{3[0]}".format(*authors))
-print("\nThe day on which more than 1% of request"
-      " lead to errors was:\n")
-print("{0[0]}\n".format(*errors))
+create_popular_articles_view()
+print("popular_articles view is ready")
+create_popular_authors_view()
+print("popular_authors view is ready")
+create_errors_view()
+print("errors view is ready")
+print("\n\nCONGRATULATIONS!!! ... All views are ready to be used\n\n")
+print('''To see the result of each view simply execute the file: report.py
+       using the command::python report.py from a new terminal window.
+       Alternatively you can execute each individual view by first executing
+       the command::python queries.py. After you have entered the news
+       database you can execute each view by simply typing:: SELECT * FROM
+       view_name. Example: SELECT * FROM popular_authors\n\n''')
