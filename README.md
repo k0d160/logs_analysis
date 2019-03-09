@@ -1,27 +1,27 @@
 
-gs Analysis Project
-##What are we analyzing?
+# Logs Analysis Project
+## What are we analyzing?
 >The program has to answer the following questions by accessing the database news,
 and display information as a sorted list:
 
-#####1. What are the most popular three articles of all time? Which articles have been accessed the most?
-######Example:
+##### 1. What are the most popular three articles of all time? Which articles have been accessed the most?
+###### Example:
 
 >"Princess Shellfish Marries Prince Handsome" — 1201 views
 "Baltimore Ravens Defeat Rhode Island Shoggoths" — 915 views
 "Political Scandal Ends In Political Scandal" — 553 views
 
 #####2\. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? 
-######Example:
+###### Example:
 
 >Ursula La Multa — 2304 views
 Rudolf von Treppenwitz — 1985 views
 Markoff Chaney — 1723 views
 Anonymous Contributor — 1023 views
 
-#####3\. On which days did more than 1% of requests lead to errors? 
+##### 3\. On which days did more than 1% of requests lead to errors? 
 
-######Example:
+###### Example:
 
 >July 29, 2016 — 2.5% errors
 
@@ -53,12 +53,12 @@ and then connect to the news database with:
     \c news
 
 >
-#####Note: If you haven't already created the views, execute the following command first:
+##### Note: If you haven't already created the views, execute the following command first:
     python create_views.py 
 
-####Once you have entered the news database you can execute each view by simply typing:
+#### Once you have entered the news database you can execute each view by simply typing:
 
     SELECT * FROM view_name. 
-####Example: 
+#### Example: 
     SELECT * FROM popular_authors
 
