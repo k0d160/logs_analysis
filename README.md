@@ -49,8 +49,11 @@ and display information as a sorted list:
 ###### 2\. The most popular authors of all time are:
 
 Ursula La Multa --- 507594 views
+
 Rudolf von Treppenwitz --- 423457 views
+
 Anonymous Contributor --- 170098 views
+
 Markoff Chaney --- 84557 views
 
 
