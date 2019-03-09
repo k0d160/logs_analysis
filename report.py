@@ -5,6 +5,7 @@ import psycopg2
 
 DBNAME = 'news'
 
+
 # Get the views responses from the database
 def get_popular_articles():
     db = psycopg2.connect(database=DBNAME)
@@ -31,6 +32,7 @@ def get_errors():
     errors = c.fetchall()
     db.close()
     return errors
+
 
 # Store response from views
 articles = get_popular_articles()
