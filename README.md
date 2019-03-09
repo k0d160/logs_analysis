@@ -11,7 +11,7 @@ and display information as a sorted list:
 "Baltimore Ravens Defeat Rhode Island Shoggoths" — 915 views
 "Political Scandal Ends In Political Scandal" — 553 views
 
-#####2\. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? 
+##### 2\. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? 
 ###### Example:
 
 >Ursula La Multa — 2304 views
@@ -52,8 +52,8 @@ and then connect to the news database with:
 
     \c news
 
->
-##### Note: If you haven't already created the views, execute the following command first:
+
+> ##### Note: If you haven't already created the views, execute the following command first:
     python create_views.py 
 
 #### Once you have entered the news database you can execute each view by simply typing:
