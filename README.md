@@ -1,5 +1,8 @@
 
 # Logs Analysis Project
+
+> #### NOTE: To be able to run this project you need to install the python library psycopg2, and have access to the news database.
+
 ## What are we analyzing?
 > The program has to answer the following questions by accessing the database news,
 and display information as a sorted list:
