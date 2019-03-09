@@ -8,20 +8,25 @@ and display information as a sorted list:
 ###### Example:
 
 > "Princess Shellfish Marries Prince Handsome" — 1201 views
-"Baltimore Ravens Defeat Rhode Island Shoggoths" — 915 views
-"Political Scandal Ends In Political Scandal" — 553 views
+
+> "Baltimore Ravens Defeat Rhode Island Shoggoths" — 915 views
+
+> "Political Scandal Ends In Political Scandal" — 553 views
 
 ##### 2\. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? 
 ###### Example:
 
 > Ursula La Multa — 2304 views
-Rudolf von Treppenwitz — 1985 views
-Markoff Chaney — 1723 views
-Anonymous Contributor — 1023 views
+
+> Rudolf von Treppenwitz — 1985 views
+
+> Markoff Chaney — 1723 views
+
+> Anonymous Contributor — 1023 views
 
 ##### 3\. On which days did more than 1% of requests lead to errors? 
 
-######Example:
+###### 	Example:
 
 > July 29, 2016 — 2.5% errors
 
@@ -29,6 +34,7 @@ Anonymous Contributor — 1023 views
 > This is how the output looks.
 
 ![](images/output.png)
+
 ###### 1\. The most popular articles of all time are:
 
 "Candidate is jerk, alleges rival" --- 338647 views
