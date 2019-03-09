@@ -48,7 +48,8 @@ def create_errors_view():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("create view errors as \
-               select format('%s --- %s errors', d.date, d.percent) as percent_errors\
+               select format('%s --- %s errors', d.date, d.percent) \
+               as percent_errors\
                from (select TO_CHAR(time :: DATE, 'Mon dd, yyyy') as date \
                , c.day, to_char(c.percentages, '9.99%') as percent \
                from (select b.day as day, ((b.errors * 100)::float) \
