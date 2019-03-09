@@ -11,7 +11,7 @@ def create_popular_articles_view():
     c = db.cursor()
     c.execute("create view pop_articles as\
                select \
-               format('\"%s\" --- %s views', title, views) as popular_articles\
+               format('\"%s\" --- %s views', title, views) \
                from (select title, articles.author, count(author) \
                as views from articles, log \
                where path = '/article/' || slug \
@@ -27,8 +27,7 @@ def create_popular_authors_view():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("create view popular_authors as\
-               select format('%s --- %s views', d.name, d.total) as \
-               popular_authors \
+               select format('%s --- %s views', d.name, d.total) as total \
                from (select sum(t.views) as total, t.no as name \
                from (select title, articles.author, authors.id as aid, \
                name as no, count(author) as views from authors, articles, log \
@@ -48,7 +47,7 @@ def create_errors_view():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("create view errors as \
-               select format('%s --- %s errors', d.date, d.percent) as percent_errors\
+               select format('%s --- %s errors', d.date, d.percent) \
                from (select TO_CHAR(time :: DATE, 'Mon dd, yyyy') as date \
                , c.day, to_char(c.percentages, '9.99%') as percent \
                from (select b.day as day, ((b.errors * 100)::float) \
