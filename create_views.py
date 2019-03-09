@@ -65,6 +65,7 @@ def create_errors_view():
     db.close()
 
 
+# Let user know the views are ready
 create_popular_articles_view()
 print("popular_articles view is ready")
 create_popular_authors_view()

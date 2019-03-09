@@ -5,7 +5,7 @@ import psycopg2
 
 DBNAME = 'news'
 
-
+# Get the views responses from the database
 def get_popular_articles():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
@@ -32,10 +32,12 @@ def get_errors():
     db.close()
     return errors
 
+# Store response from views
 articles = get_popular_articles()
 authors = get_popular_authors()
 errors = get_errors()
 
+# Display output from views in plain text
 print("\nThe most popular articles of all time are:\n")
 print("{0[0]}\n{1[0]}\n{2[0]}".format(*articles))
 print("\nThe most popular authors of all time are:\n")
